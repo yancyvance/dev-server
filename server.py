@@ -81,6 +81,13 @@ def upload_and_compile():
         if compile_result.returncode != 0:
             return render_template_string(HTML_TEMPLATE, output=f"Compilation Error:\n{compile_result.stderr}")
 
+        # Check if the executable exists
+        if not os.path.exists(executable):
+            return render_template_string(HTML_TEMPLATE, output="Error: Executable file not found after compilation.")
+        
+        # Make the executable file runnable
+        os.chmod(executable, 0o755)
+
         # Initialize run_result to avoid unbound error
         run_result = None  
         output = "Error: Unable to execute program."
