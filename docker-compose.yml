@@ -1,0 +1,8 @@
+services:
+  gcc_webserver:
+    build: .
+    ports:
+      - "5000:5000"
+    volumes:
+      - ./uploads:/tmp/uploads
+    restart: unless-stopped
