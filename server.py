@@ -84,9 +84,6 @@ def upload_and_compile():
         # Check if the executable exists
         if not os.path.exists(executable):
             return render_template_string(HTML_TEMPLATE, output="Error: Executable file not found after compilation.")
-        
-        # Make the executable file runnable
-        os.chmod(executable, 0o755)
 
         # Initialize run_result to avoid unbound error
         run_result = None  
@@ -94,7 +91,8 @@ def upload_and_compile():
         
         try:
              # Run the compiled program
-            run_cmd = [executable]
+            #run_cmd = [executable]
+            run_cmd = './program.out'
         
             if input_filepath and input_usage == "stdin":
                 with open(input_filepath, "r") as input_file:
