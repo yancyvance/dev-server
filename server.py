@@ -7,6 +7,13 @@ app = Flask(__name__)
 UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
+def clear_uploads():
+    for root, dirs, files in os.walk(UPLOAD_FOLDER):
+        for file in files:
+            os.remove(os.path.join(root, file))
+        for dir in dirs:
+            os.rmdir(os.path.join(root, dir))
+
 HTML_TEMPLATE = """
 <!DOCTYPE html>
 <html>
@@ -21,6 +28,9 @@ HTML_TEMPLATE = """
         <p>Provide Input File (Optional)</p>
         <input type="file" name="input_file" accept=".txt"><br><br>
         <input type="submit" value="Compile and Run">
+    </form>
+    <form action="/clear" method="post">
+        <input type="submit" value="Clear Uploads Folder">
     </form>
     {% if output %}
     <h3>Output:</h3>
@@ -73,6 +83,11 @@ def upload_and_compile():
         return render_template_string(HTML_TEMPLATE, output=run_result.stdout + run_result.stderr)
     
     return render_template_string(HTML_TEMPLATE)
+
+@app.route("/clear", methods=["POST"])
+def clear_folder():
+    clear_uploads()
+    return render_template_string(HTML_TEMPLATE, output="Uploads folder cleared successfully.")
 
 if __name__ == "__main__":
     os.system("git pull origin main")  # Auto-update from GitHub
