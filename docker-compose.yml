@@ -1,6 +1,6 @@
 services:
   gcc_webserver:
-    build: .
+    build: https://github.com/yancyvance/dev-server.git
     ports:
       - "5000:5000"
     volumes:
