@@ -28,6 +28,11 @@ HTML_TEMPLATE = """
         <input type="file" name="c_files" multiple required><br><br>
         <p>Provide Input File (Optional)</p>
         <input type="file" name="input_file" accept=".txt"><br><br>
+        <label for="input_usage">Use input file as:</label>
+        <select name="input_usage">
+            <option value="code">Part of Code (fopen)</option>
+            <option value="stdin">Standard Input (stdin)</option>
+        </select><br><br>
         <input type="submit" value="Compile and Run">
     </form>
     <br>
@@ -52,6 +57,7 @@ def upload_and_compile():
 
         c_files = request.files.getlist("c_files")
         input_file = request.files.get("input_file")
+        input_usage = request.form.get("input_usage")  # 'code' or 'stdin'
         
         c_filenames = []
         for file in c_files:
@@ -76,11 +82,16 @@ def upload_and_compile():
         
         # Run the compiled program
         run_cmd = [executable]
-        if input_filepath:
-            with open(input_filepath, "r") as input_file:
-                run_result = subprocess.run(run_cmd, stdin=input_file, capture_output=True, text=True)
-        else:
-            run_result = subprocess.run(run_cmd, capture_output=True, text=True)
+        try:
+            if input_filepath and input_usage == "stdin":
+                with open(input_filepath, "r") as input_file:
+                    run_result = subprocess.run(run_cmd, stdin=input_file, capture_output=True, text=True, cwd=job_folder)
+            else:
+                run_result = subprocess.run(run_cmd, capture_output=True, text=True, cwd=job_folder)
+
+            output = run_result.stdout + run_result.stderr
+        except Exception as e:
+            output = f"Runtime Error: {str(e)}"
         
         return render_template_string(HTML_TEMPLATE, output=run_result.stdout + run_result.stderr)
     
