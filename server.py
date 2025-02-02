@@ -16,9 +16,7 @@ HTML_TEMPLATE = """
 <body>
     <h2>Upload C files and an Optional Input File</h2>
     <form action="/" method="post" enctype="multipart/form-data">
-        <p>Provide the C File/s</p>
         <input type="file" name="c_files" multiple required><br><br>
-        <p>Provide Input File (Optional)</p>
         <input type="file" name="input_file" accept=".txt"><br><br>
         <input type="submit" value="Compile and Run">
     </form>
@@ -43,7 +41,7 @@ def upload_and_compile():
         
         c_filenames = []
         for file in c_files:
-            if file.filename.endswith(".c"):
+            if file.filename.endswith(".c") or file.filename.endswith(".h"):
                 filepath = os.path.join(job_folder, file.filename)
                 file.save(filepath)
                 c_filenames.append(filepath)
@@ -55,8 +53,8 @@ def upload_and_compile():
         
         executable = os.path.join(job_folder, "program.out")
         
-        # Compile the C files
-        compile_cmd = ["gcc"] + c_filenames + ["-o", executable]
+        # Compile the C files while preserving original filenames
+        compile_cmd = ["gcc"] + [os.path.join(job_folder, file.filename) for file in c_files] + ["-o", executable]
         compile_result = subprocess.run(compile_cmd, capture_output=True, text=True)
         
         if compile_result.returncode != 0:
