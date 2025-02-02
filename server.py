@@ -30,6 +30,7 @@ HTML_TEMPLATE = """
         <input type="file" name="input_file" accept=".txt"><br><br>
         <input type="submit" value="Compile and Run">
     </form>
+    <be>
     <form action="/clear" method="post">
         <input type="submit" value="Clear Uploads Folder">
     </form>
