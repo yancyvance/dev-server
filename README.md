@@ -1,10 +1,10 @@
 ## dev-server
 
-This requires docker to be installed. You can initially download both the **Dockerfile** and **docker-compose.yml** files on your machine.
+This requires docker to be installed. You can initially download the **docker-compose.yml** file on your machine.
 
-Create a folder **uploads** in the current directory where both files are residing.
+Create a folder **uploads** in the current directory where the compose file is residing.
 
-Afterward, run the following commands:
+Afterward, run the following command:
 
 `docker compose build`
 
