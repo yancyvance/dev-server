@@ -59,16 +59,17 @@ def upload_and_compile():
         input_file = request.files.get("input_file")
         input_usage = request.form.get("input_usage")  # 'code' or 'stdin'
         
-        c_filenames = []
         for file in c_files:
             if file.filename.endswith(".c") or file.filename.endswith(".h"):
-                filepath = os.path.join(job_folder, file.filename)
-                file.save(filepath)
-                c_filenames.append(filepath)
+                file.save(os.path.join(job_folder, file.filename))
+                #filepath = os.path.join(job_folder, file.filename)
+                #file.save(filepath)
+                #c_filenames.append(filepath)
         
         input_filepath = None
         if input_file and input_file.filename:
-            input_filepath = os.path.join(job_folder, "input.txt")
+            #input_filepath = os.path.join(job_folder, "input.txt")
+            input_filepath = os.path.join(job_folder, input_file.filename)
             input_file.save(input_filepath)
         
         executable = os.path.join(job_folder, "program.out")
