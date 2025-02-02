@@ -1,4 +1,5 @@
 import os
+import shutil
 import subprocess
 import uuid
 from flask import Flask, request, render_template_string
@@ -8,11 +9,11 @@ UPLOAD_FOLDER = "uploads"
 os.makedirs(UPLOAD_FOLDER, exist_ok=True)
 
 def clear_uploads():
-    for root, dirs, files in os.walk(UPLOAD_FOLDER):
+    for root, dirs, files in os.walk(UPLOAD_FOLDER, topdown=False):
         for file in files:
             os.remove(os.path.join(root, file))
         for dir in dirs:
-            os.rmdir(os.path.join(root, dir))
+            shutil.rmtree(os.path.join(root, dir), ignore_errors=True)
 
 HTML_TEMPLATE = """
 <!DOCTYPE html>
