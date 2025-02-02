@@ -20,7 +20,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache flask
 
 # Clone the latest version of the Flask application
-RUN git clone https://github.com:yancyvance/dev-server.git .
+RUN git clone https://github.com/yancyvance/dev-server.git .
 
 # Expose the port
 EXPOSE 5000
