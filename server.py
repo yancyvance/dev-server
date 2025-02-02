@@ -73,7 +73,6 @@ def upload_and_compile():
             input_file.save(input_filepath)
         
         executable = os.path.join(job_folder, "program.out")
-        #executable = os.path.join("program.out")
         
         # Compile the C files while preserving original filenames
         compile_cmd = ["gcc"] + [os.path.join(job_folder, file.filename) for file in c_files] + ["-o", executable]
@@ -88,7 +87,7 @@ def upload_and_compile():
         
         try:
              # Run the compiled program
-            run_cmd = ["program.out"]
+            run_cmd = [executable]
         
             if input_filepath and input_usage == "stdin":
                 with open(input_filepath, "r") as input_file:
