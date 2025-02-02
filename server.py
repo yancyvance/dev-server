@@ -16,8 +16,8 @@ HTML_TEMPLATE = """
 <body>
     <h2>Upload C files and an Optional Input File</h2>
     <form action="/" method="post" enctype="multipart/form-data">
-        <p>Find the C FIles</p>
-        <input type="file" name="c_files" multiple required><br><br>'
+        <p>Provide the C File/s</p>
+        <input type="file" name="c_files" multiple required><br><br>
         <p>Provide Input File (Optional)</p>
         <input type="file" name="input_file" accept=".txt"><br><br>
         <input type="submit" value="Compile and Run">
