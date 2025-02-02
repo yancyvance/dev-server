@@ -11,3 +11,10 @@ Afterward, run the following commands:
 `docker compose up`
 
 This service automatically pushes any updates from this repository.
+
+
+### Accessing Web Interface
+
+The web service listens to port 5000. Using a web browser, access it using:
+
+`http://localhost:5000`
