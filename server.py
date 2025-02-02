@@ -79,21 +79,26 @@ def upload_and_compile():
         
         if compile_result.returncode != 0:
             return render_template_string(HTML_TEMPLATE, output=f"Compilation Error:\n{compile_result.stderr}")
+
+        # Initialize run_result to avoid unbound error
+        run_result = None  
+        output = "Error: Unable to execute program."
         
-        # Run the compiled program
-        run_cmd = [executable]
         try:
+             # Run the compiled program
+            run_cmd = [executable]
+        
             if input_filepath and input_usage == "stdin":
                 with open(input_filepath, "r") as input_file:
                     run_result = subprocess.run(run_cmd, stdin=input_file, capture_output=True, text=True, cwd=job_folder)
             else:
                 run_result = subprocess.run(run_cmd, capture_output=True, text=True, cwd=job_folder)
 
-            output = run_result.stdout + run_result.stderr
+            output = run_result.stdout + run_result.stderr if run_result else "Runtime execution failed."
         except Exception as e:
             output = f"Runtime Error: {str(e)}"
         
-        return render_template_string(HTML_TEMPLATE, output=run_result.stdout + run_result.stderr)
+        return render_template_string(HTML_TEMPLATE, output=output)
     
     return render_template_string(HTML_TEMPLATE)
 
