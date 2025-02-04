@@ -2,7 +2,7 @@ services:
   gcc_webserver:
     build: https://github.com/yancyvance/dev-server.git
     ports:
-      - "5000:5000"
+      - "9000:5000"
     volumes:
       - ./uploads:/app/uploads
     restart: unless-stopped
