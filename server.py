@@ -33,6 +33,8 @@ HTML_TEMPLATE = """
             <option value="code">Part of Code (fopen)</option>
             <option value="stdin">Standard Input (stdin)</option>
         </select><br><br>
+        <label for="gcc_flags">Additional GCC Flags:</label>
+        <input type="text" name="gcc_flags" placeholder="-Wall -O2"><br><br>
         <input type="submit" value="Compile and Run">
     </form>
     <br>
@@ -58,6 +60,10 @@ def upload_and_compile():
         c_files = request.files.getlist("c_files")
         input_file = request.files.get("input_file")
         input_usage = request.form.get("input_usage")  # 'code' or 'stdin'
+        gcc_flags = request.form.get("gcc_flags", "").strip()  # Get additional GCC flags
+
+        # Split flags safely into a list
+        gcc_flag_list = gcc_flags.split() if gcc_flags else []
         
         for file in c_files:
             if file.filename.endswith(".c") or file.filename.endswith(".h"):
@@ -75,7 +81,7 @@ def upload_and_compile():
         executable = os.path.join(job_folder, "program.out")
         
         # Compile the C files while preserving original filenames
-        compile_cmd = ["gcc"] + [os.path.join(job_folder, file.filename) for file in c_files] + ["-o", executable]
+        compile_cmd = ["gcc"] + [os.path.join(job_folder, file.filename) for file in c_files] + gcc_flag_list + ["-o", executable]
         compile_result = subprocess.run(compile_cmd, capture_output=True, text=True)
         
         if compile_result.returncode != 0:
